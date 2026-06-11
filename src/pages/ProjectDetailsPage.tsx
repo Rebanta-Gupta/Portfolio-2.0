@@ -24,6 +24,10 @@ export default function ProjectDetailsPage({ data }: ProjectDetailsPageProps) {
 
   usePageTransition();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const project = findProjectById(data, projectId ?? null);
   const fromState = location.state as FromState | null;
 
@@ -69,7 +73,7 @@ export default function ProjectDetailsPage({ data }: ProjectDetailsPageProps) {
       {/* Dot-grid header bg */}
       <div className="dot-grid absolute inset-x-0 top-0 h-64 opacity-20 pointer-events-none" />
 
-      <div className="relative mx-auto max-w-5xl px-6 py-10 md:px-10">
+      <div className="relative mx-auto max-w-5xl px-6 pt-24 pb-10 md:px-10">
 
         {/* Back button */}
         <button

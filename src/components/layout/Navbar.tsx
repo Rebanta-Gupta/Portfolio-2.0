@@ -16,30 +16,52 @@ interface NavbarProps {
 }
 
 export default function Navbar({ theme, onThemeToggle }: NavbarProps) {
-  const [scrolled,    setScrolled]    = useState(false);
-  const [menuOpen,    setMenuOpen]    = useState(false);
-  const [activeLink,  setActiveLink]  = useState('#home');
+  const [scrolled,   setScrolled]   = useState(false);
+  const [menuOpen,   setMenuOpen]   = useState(false);
+  const [activeLink, setActiveLink] = useState('#home');
   const navRef = useRef<HTMLElement>(null);
+  const ioRef  = useRef<IntersectionObserver | null>(null);
 
+  // ── Scroll shadow ────────────────────────────────────────────
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // ── Active section tracker ───────────────────────────────────
   useEffect(() => {
-    const sections = document.querySelectorAll<HTMLElement>('.section');
-    const io = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) setActiveLink(`#${e.target.id}`); }),
-      { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
-    );
-    sections.forEach(s => io.observe(s));
-    return () => io.disconnect();
+    // Defer so all sections are mounted before we query them
+    const timer = setTimeout(() => {
+      ioRef.current?.disconnect();
+
+      const sections = document.querySelectorAll<HTMLElement>('.section');
+      if (!sections.length) return;
+
+      ioRef.current = new IntersectionObserver(
+        entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) setActiveLink(`#${e.target.id}`);
+          });
+        },
+        { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
+      );
+      sections.forEach(s => ioRef.current!.observe(s));
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
+      ioRef.current?.disconnect();
+    };
   }, []);
 
+  // ── Close mobile menu on outside click ──────────────────────
   useEffect(() => {
+    if (!menuOpen) return;
     const onClick = (e: MouseEvent) => {
-      if (menuOpen && navRef.current && !navRef.current.contains(e.target as Node)) setMenuOpen(false);
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
     };
     document.addEventListener('click', onClick);
     return () => document.removeEventListener('click', onClick);
@@ -71,7 +93,7 @@ export default function Navbar({ theme, onThemeToggle }: NavbarProps) {
           onClick={e => scrollTo(e, '#home')}
           style={{ color: 'var(--text-primary)' }}
         >
-          RG<span style={{ color: 'var(--sky)' }}>.</span>
+          RVG<span style={{ color: 'var(--sky)' }}>.</span>
         </a>
 
         {/* Desktop nav */}
@@ -83,7 +105,7 @@ export default function Navbar({ theme, onThemeToggle }: NavbarProps) {
                 onClick={e => scrollTo(e, link.href)}
                 className="relative px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
                 style={{
-                  color: activeLink === link.href ? 'var(--sky)' : 'var(--text-muted)',
+                  color:      activeLink === link.href ? 'var(--sky)'     : 'var(--text-muted)',
                   background: activeLink === link.href ? 'var(--sky-dim)' : 'transparent',
                 }}
               >
@@ -119,11 +141,11 @@ export default function Navbar({ theme, onThemeToggle }: NavbarProps) {
 
       {/* Mobile drawer */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-350`}
+        className="md:hidden overflow-hidden transition-all duration-350"
         style={{
-          maxHeight: menuOpen ? '400px' : '0px',
+          maxHeight:    menuOpen ? '400px' : '0px',
           borderBottom: menuOpen ? '1px solid var(--border)' : 'none',
-          background: 'rgba(7,9,15,0.97)',
+          background:   'rgba(7,9,15,0.97)',
           backdropFilter: 'blur(16px)',
         }}
       >
@@ -135,7 +157,7 @@ export default function Navbar({ theme, onThemeToggle }: NavbarProps) {
                 onClick={e => scrollTo(e, link.href)}
                 className="block px-4 py-3 text-sm font-medium rounded-lg transition-colors"
                 style={{
-                  color: activeLink === link.href ? 'var(--sky)' : 'var(--text-primary)',
+                  color:      activeLink === link.href ? 'var(--sky)'     : 'var(--text-primary)',
                   background: activeLink === link.href ? 'var(--sky-dim)' : 'transparent',
                 }}
               >
