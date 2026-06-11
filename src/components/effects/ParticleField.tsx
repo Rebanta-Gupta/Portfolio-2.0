@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import config from '../../content/particleConfig.json';
 
 interface ParticleFieldProps {
-  count?: number;
   className?: string;
 }
 
-export default function ParticleField({ count = 1600, className = '' }: ParticleFieldProps) {
+export default function ParticleField({ className = '' }: ParticleFieldProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -16,6 +16,10 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
     let destroyed = false;
     let raf: number;
 
+    const { count } = config;
+    const particleColor = parseInt(config.particle.color.replace('#', ''), 16);
+    const bondColor     = parseInt(config.bonds.color.replace('#', ''), 16);
+
     // ── Renderer ──────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
@@ -24,8 +28,13 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
     mount.appendChild(renderer.domElement);
 
     const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, mount.clientWidth / mount.clientHeight, 0.1, 1000);
-    camera.position.z = 80;
+    const camera = new THREE.PerspectiveCamera(
+      config.camera.fov,
+      mount.clientWidth / mount.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = config.camera.z;
 
     // ── Particles ─────────────────────────────────────────────────
     const positions = new Float32Array(count * 3);
@@ -33,21 +42,24 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
     const offsets   = new Float32Array(count);
 
     for (let i = 0; i < count; i++) {
-      positions[i * 3]     = (Math.random() - 0.5) * 180;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 120;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 60;
+      positions[i * 3]     = (Math.random() - 0.5) * config.spread.x;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * config.spread.y;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * config.spread.z;
       speeds[i]  = 0.08 + Math.random() * 0.12;
       offsets[i] = Math.random() * Math.PI * 2;
     }
+
+    // Store origins so particles spring back — prevents bond breaking
+    const origins = new Float32Array(positions);
 
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const mat = new THREE.PointsMaterial({
-      color: 0x38bdf8,
-      size: 0.55,
-      transparent: true,
-      opacity: 0.72,
+      color:           particleColor,
+      size:            config.particle.size,
+      transparent:     true,
+      opacity:         config.particle.opacity,
       sizeAttenuation: true,
     });
 
@@ -56,15 +68,14 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
 
     // ── Line connections ──────────────────────────────────────────
     const linePairs: [number, number][] = [];
-    const THRESHOLD = 22;
     outer: for (let i = 0; i < count; i++) {
       for (let j = i + 1; j < count; j++) {
         const dx = positions[i * 3]     - positions[j * 3];
         const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
         const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
-        if (Math.sqrt(dx * dx + dy * dy + dz * dz) < THRESHOLD) {
+        if (Math.sqrt(dx * dx + dy * dy + dz * dz) < config.bonds.threshold) {
           linePairs.push([i, j]);
-          if (linePairs.length >= 480) break outer;
+          if (linePairs.length >= config.bonds.maxCount) break outer;
         }
       }
     }
@@ -72,15 +83,19 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
     const linePositions = new Float32Array(linePairs.length * 6);
     const lineGeo = new THREE.BufferGeometry();
     lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.13 });
+    const lineMat = new THREE.LineBasicMaterial({
+      color:       bondColor,
+      transparent: true,
+      opacity:     config.bonds.opacity,
+    });
     const lines = new THREE.LineSegments(lineGeo, lineMat);
     scene.add(lines);
 
     // ── Mouse ─────────────────────────────────────────────────────
     const mouse = { x: 0, y: 0, active: false };
     const onMove = (e: MouseEvent) => {
-      mouse.x = (e.clientX / window.innerWidth)  * 2 - 1;
-      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      mouse.x      = (e.clientX / window.innerWidth)  * 2 - 1;
+      mouse.y      = -(e.clientY / window.innerHeight) * 2 + 1;
       mouse.active = true;
     };
     window.addEventListener('mousemove', onMove, { passive: true });
@@ -109,28 +124,40 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
       if (destroyed) return;
       raf = requestAnimationFrame(animate);
       if (!visible) return;
-      frame += 0.004;
+      frame += config.animation.driftSpeed;
 
       const pos = geo.attributes.position.array as Float32Array;
 
       for (let i = 0; i < count; i++) {
-        pos[i * 3 + 1] += Math.sin(frame * speeds[i] + offsets[i]) * 0.012;
+        const ix = i * 3;
+        const iy = i * 3 + 1;
+        const iz = i * 3 + 2;
 
+        // Gentle drift
+        pos[iy] += Math.sin(frame * speeds[i] + offsets[i]) * config.animation.driftAmount;
+
+        // Spring back toward origin — keeps bonds from breaking
+        pos[ix] += (origins[ix] - pos[ix]) * config.animation.springStrength;
+        pos[iy] += (origins[iy] - pos[iy]) * config.animation.springStrength;
+        pos[iz] += (origins[iz] - pos[iz]) * config.animation.springStrength;
+
+        // Mouse repulsion
         if (mouse.active) {
-          const mx = mouse.x * 90;
-          const my = mouse.y * 60;
-          const dx = pos[i * 3]     - mx;
-          const dy = pos[i * 3 + 1] - my;
+          const mx = mouse.x * config.spread.x / 2;
+          const my = mouse.y * config.spread.y / 2;
+          const dx = pos[ix] - mx;
+          const dy = pos[iy] - my;
           const d  = Math.sqrt(dx * dx + dy * dy);
-          if (d < 14) {
-            const f = (14 - d) / 14 * 0.18;
-            pos[i * 3]     += (dx / d) * f;
-            pos[i * 3 + 1] += (dy / d) * f;
+          if (d < config.mouse.repulsionRadius) {
+            const f = (config.mouse.repulsionRadius - d) / config.mouse.repulsionRadius * config.mouse.repulsionStrength;
+            pos[ix] += (dx / d) * f;
+            pos[iy] += (dy / d) * f;
           }
         }
       }
       geo.attributes.position.needsUpdate = true;
 
+      // Update line positions
       const lp = lineGeo.attributes.position.array as Float32Array;
       for (let k = 0; k < linePairs.length; k++) {
         const [a, b] = linePairs[k];
@@ -139,7 +166,8 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
       }
       lineGeo.attributes.position.needsUpdate = true;
 
-      points.rotation.y += 0.00015;
+      // Slow auto-rotation
+      points.rotation.y += config.animation.rotationSpeed;
       lines.rotation.y   = points.rotation.y;
 
       renderer.render(scene, camera);
@@ -162,7 +190,7 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
         mount.removeChild(renderer.domElement);
       }
     };
-  }, [count]);
+  }, []);
 
   return (
     <div

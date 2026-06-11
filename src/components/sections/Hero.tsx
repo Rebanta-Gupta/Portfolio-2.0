@@ -55,18 +55,18 @@ export default function Hero({ hero, resumeEnabled, resumePath }: HeroProps) {
       className="section relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6 pt-20"
     >
       {/* Particle field bg */}
-      <div className="absolute inset-0 z-0">
-        <ParticleField count={1600} />
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <ParticleField />
       </div>
 
       {/* Dot-grid overlay */}
       <div className="dot-grid absolute inset-0 z-0 opacity-25 pointer-events-none" />
 
-      {/* Radial gradient vignette */}
+      {/* Stronger radial vignette — pushes particles to edges */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, var(--bg) 100%)',
+          background: 'radial-gradient(ellipse 60% 60% at 50% 50%, transparent 20%, var(--bg) 80%)',
         }}
       />
 
