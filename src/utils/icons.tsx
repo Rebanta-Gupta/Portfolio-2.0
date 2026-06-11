@@ -17,19 +17,19 @@ import {
 import type { PortfolioIcon } from '../types';
 
 const iconMap: Record<PortfolioIcon, LucideIcon> = {
-  atom:          Atom,
-  beaker:        Beaker,
-  boxes:         Boxes,
+  atom:           Atom,
+  beaker:         Beaker,
+  boxes:          Boxes,
   'chart-column': ChartColumn,
-  code:          Code,
-  cpu:           Cpu,
-  'gamepad-2':   Gamepad2,
-  github:        Github,
-  linkedin:      Linkedin,
-  mail:          Mail,
-  terminal:      Terminal,
-  wrench:        Wrench,
-  zap:           Zap,
+  code:           Code,
+  cpu:            Cpu,
+  'gamepad-2':    Gamepad2,
+  github:         Github,
+  linkedin:       Linkedin,
+  mail:           Mail,
+  terminal:       Terminal,
+  wrench:         Wrench,
+  zap:            Zap,
 };
 
 interface PortfolioIconProps {
