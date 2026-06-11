@@ -35,6 +35,7 @@ const iconMap: Record<PortfolioIcon, LucideIcon> = {
 interface PortfolioIconProps {
   name: PortfolioIcon;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export function PortfolioIconSvg({ name, className }: PortfolioIconProps) {

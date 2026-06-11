@@ -71,11 +71,9 @@ export default function ParticleField({ count = 1600, className = '' }: Particle
     const linePositions = new Float32Array(linePairs.length * 6);
     const lineGeo = new THREE.BufferGeometry();
     lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-    const lineMat = new THREE.LineSegmentsGeometry
-      ? new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.13 })
-      : new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.13 });
-    const lines = new THREE.LineSegments(lineGeo, lineMat);
-    scene.add(lines);
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.13 });
+      const lines = new THREE.LineSegments(lineGeo, lineMat);
+      scene.add(lines);
 
     // ── Mouse ─────────────────────────────────────────────────────
     const mouse = { x: 0, y: 0, active: false };

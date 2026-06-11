@@ -7,53 +7,36 @@ interface CustomCursorProps {
 }
 
 export default function CustomCursor({ pos, variant }: CustomCursorProps) {
-  const ringRef = useRef<HTMLDivElement>(null);
-  const dotRef  = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
 
-  // Ring follows with extra lag applied via CSS transition
   useEffect(() => {
-    const ring = ringRef.current;
-    const dot  = dotRef.current;
-    if (!ring || !dot) return;
-
-    dot.style.transform  = `translate(${pos.x - 5}px, ${pos.y - 5}px)`;
-    ring.style.transform = `translate(${pos.x - 18}px, ${pos.y - 18}px)`;
+    const el = cursorRef.current;
+    if (!el) return;
+    el.style.transform = `translate(${pos.x - 16}px, ${pos.y - 16}px)`;
   }, [pos]);
 
-  const ringStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0, left: 0,
-    width: 36, height: 36,
-    borderRadius: '50%',
-    border: `1.5px solid ${variant === 'hover' ? 'var(--amber)' : variant === 'text' ? 'var(--sky)' : 'var(--sky)'}`,
-    pointerEvents: 'none',
-    zIndex: 99999,
-    mixBlendMode: 'normal',
-    transition: 'width 0.2s, height 0.2s, border-color 0.25s, opacity 0.2s, transform 0.08s linear',
-    opacity: variant === 'hidden' ? 0 : 1,
-    transform: 'translate(-100px,-100px)',
-    ...(variant === 'hover' ? { width: 48, height: 48, borderColor: 'var(--amber)' } : {}),
-    ...(variant === 'drag'  ? { width: 44, height: 44, borderStyle: 'dashed' } : {}),
-  };
-
-  const dotStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: 0, left: 0,
-    width: 10, height: 10,
-    borderRadius: '50%',
-    background: variant === 'hover' ? 'var(--amber)' : 'var(--sky)',
-    pointerEvents: 'none',
-    zIndex: 100000,
-    transition: 'background 0.25s, width 0.2s, height 0.2s, opacity 0.2s',
-    opacity: variant === 'hidden' ? 0 : 1,
-    transform: 'translate(-100px,-100px)',
-    ...(variant === 'text' ? { width: 2, height: 20, borderRadius: 1 } : {}),
-  };
+  const isHover  = variant === 'hover';
+  const isHidden = variant === 'hidden';
+  const isText   = variant === 'text';
 
   return (
-    <>
-      <div ref={ringRef} style={ringStyle} aria-hidden="true" />
-      <div ref={dotRef}  style={dotStyle}  aria-hidden="true" />
-    </>
+    <div
+      ref={cursorRef}
+      aria-hidden="true"
+      style={{
+        position:      'fixed',
+        top:           0,
+        left:          0,
+        width:         isHover ? 44 : 32,
+        height:        isHover ? 44 : isText ? 24 : 32,
+        borderRadius:  isText ? 2 : '50%',
+        border:        `1.5px solid ${isHover ? 'var(--amber)' : 'var(--sky)'}`,
+        pointerEvents: 'none',
+        zIndex:        99999,
+        opacity:       isHidden ? 0 : 0.85,
+        transition:    'width 0.15s, height 0.15s, border-color 0.15s, opacity 0.15s, border-radius 0.15s',
+        willChange:    'transform',
+      }}
+    />
   );
 }
