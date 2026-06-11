@@ -6,19 +6,24 @@ interface AboutProps {
 
 export default function About({ about }: AboutProps) {
   const portraitWrapRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = portraitWrapRef.current;
-    if (!el) return;
-    const { left, top, width, height } = el.getBoundingClientRect();
-    const x = ((e.clientX - left) / width  - 0.5) * 18;
-    const y = ((e.clientY - top)  / height - 0.5) * 18;
-    el.style.transform = `perspective(600px) rotateY(${x}deg) rotateX(${-y}deg) scale(1.03)`;
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const el = portraitWrapRef.current;
+      if (!el) return;
+      const { left, top, width, height } = el.getBoundingClientRect();
+      const x = ((e.clientX - left) / width  - 0.5) * 14;
+      const y = ((e.clientY - top)  / height - 0.5) * 14;
+      el.style.transform = `perspective(600px) rotateY(${x}deg) rotateX(${-y}deg) scale3d(1.03,1.03,1.03)`;
+    });
   };
 
   const onMouseLeave = () => {
+    cancelAnimationFrame(rafRef.current);
     const el = portraitWrapRef.current;
-    if (el) el.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)';
+    if (el) el.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)';
   };
 
   return (
@@ -44,7 +49,7 @@ export default function About({ about }: AboutProps) {
             ))}
           </div>
 
-          {/* Portrait with CSS 3D tilt */}
+          {/* Portrait */}
           <div className="reveal flex justify-center md:justify-end">
             <div
               ref={portraitWrapRef}
@@ -52,8 +57,9 @@ export default function About({ about }: AboutProps) {
               onMouseLeave={onMouseLeave}
               className="relative w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden select-none"
               style={{
-                transition: 'transform 0.15s cubic-bezier(0.16,1,0.3,1)',
+                transition: 'transform 0.12s ease-out',
                 transformStyle: 'preserve-3d',
+                willChange: 'transform',
                 border: '1px solid var(--border-glow)',
                 boxShadow: '0 20px 60px rgba(56,189,248,0.12)',
               }}
@@ -64,7 +70,6 @@ export default function About({ about }: AboutProps) {
                 className="w-full h-full object-cover object-top"
                 loading="lazy"
               />
-              {/* Shine overlay */}
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{

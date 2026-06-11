@@ -38,7 +38,7 @@ interface PortfolioIconProps {
   style?: React.CSSProperties;
 }
 
-export function PortfolioIconSvg({ name, className }: PortfolioIconProps) {
+export function PortfolioIconSvg({ name, className, style }: PortfolioIconProps) {
   const Icon = iconMap[name];
-  return <Icon className={className} aria-hidden="true" />;
+  return <Icon className={className} style={style} aria-hidden="true" />;
 }

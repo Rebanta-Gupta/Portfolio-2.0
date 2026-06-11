@@ -16,7 +16,7 @@ const isTouch = typeof window !== 'undefined' && window.matchMedia('(hover: none
 export default function App() {
   const { data }                = usePortfolioData();
   const { theme, toggle }       = useTheme();
-  const { pos, variant, setVariant } = useCursorState();
+  const { variant, setVariant } = useCursorState();
   const easterEgg               = useEasterEgg();
   const [loaded, setLoaded]     = useState(false);
 
@@ -34,7 +34,7 @@ export default function App() {
   return (
     <div onMouseOver={handleMouseOver}>
       {/* Custom cursor — hidden automatically on touch via CSS */}
-      {!isTouch && <CustomCursor pos={pos} variant={variant} />}
+      {!isTouch && <CustomCursor variant={variant} />}
 
       {/* Easter egg overlay */}
       <EasterEggOverlay active={easterEgg} />

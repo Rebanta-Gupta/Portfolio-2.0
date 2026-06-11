@@ -4,5 +4,17 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // No base path needed for Vercel — served from root
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react':  ['react', 'react-dom', 'react-router-dom'],
+          'vendor-three':  ['three'],
+          'vendor-gsap':   ['gsap'],
+          'vendor-lucide': ['lucide-react'],
+        },
+      },
+    },
+  },
 });
