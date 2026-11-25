@@ -1,7 +1,7 @@
 import type { PortfolioData } from '../types';
 
 const portfolioData: PortfolioData = {
-  resumeEnabled: true, // ← set to false to hide the resume download button everywhere
+  resumeEnabled: false, // CV hidden until a PDF matching this site is in /public/
   resumePath: 'resume.pdf', // ← drop your PDF in /public/ and update this name
 
   hero: {
@@ -41,12 +41,20 @@ const portfolioData: PortfolioData = {
       skills: ['Teaching & Mentoring', 'Interpersonal Skills', 'Adaptability', 'Knowledge Transfer'],
     },
     {
-      title: 'Youth Program Intern',
+      title: 'Youth Leader',
       org: 'University Neighbourhood Association',
       date: 'Sep 2024 – Jun 2025',
       location: 'Vancouver, BC',
-      description: 'Supported the planning and execution of over 10 community events, working closely with diverse teams to ensure smooth coordination, stakeholder engagement, and successful program delivery.',
-      skills: ['Leadership', 'Project Coordination', 'Event Planning', 'Stakeholder Engagement'],
+      description: 'Part of a 25+ member youth group that planned and ran 5+ community events end-to-end.',
+      skills: ['Teamwork', 'Event Planning', 'Community Engagement'],
+    },
+    {
+      title: 'Youth Intern',
+      org: 'University Neighbourhood Association',
+      date: 'Jul 2025 – Aug 2025',
+      location: 'Vancouver, BC',
+      description: 'Independently planned 5+ pop-up events: wrote proposals, set budgets, sourced materials, scheduled, estimated volunteer needs and defined target age groups. Tracked inventory in spreadsheets I built.',
+      skills: ['Project Coordination', 'Budgeting', 'Event Planning', 'Spreadsheets'],
     },
   ],
 
@@ -58,22 +66,22 @@ const portfolioData: PortfolioData = {
       category: 'hardware',
       featured: true,
       title: 'Applied Nanomaterials for Electronic Systems',
-      brief: 'Synthesized silver nanoparticles, formulated conductive ink, designed and fabricated a functional PCB using printed electronics.',
+      brief: 'UWNRG printed-electronics workshop: the silver nanoparticle ink batch failed, so we switched to commercial ink and used manual rework to deliver a tested, working LED circuit.',
       description: [
-        'This project explored how nanomaterials can be used in real electronic systems. I synthesized silver nanoparticles using chemical reduction methods and used them to formulate a conductive ink for printed electronics. The goal was to see how materials developed at the nanoscale could actually be integrated into functional hardware.',
-        'Alongside the materials work, I designed a complete PCB in KiCad, including schematic capture and board layout. The board was fabricated using a Voltera V-One PCB printer, which allowed me to rapidly prototype the design using conductive ink. After printing, I hand-soldered the components and performed bring-up and validation.',
-        'What I enjoyed most was getting to work across the full hardware development pipeline — from synthesizing nanomaterials, to designing electronics in CAD, to physically fabricating and assembling the board. A great example of how materials science, electrical design, and hands-on prototyping come together.',
+        'A UWNRG Nanomaterials Workshop that set out to go end-to-end on printed electronics, from raw chemistry to a working circuit, using conductive ink synthesized from scratch. Working as part of the group, I measured reagents and ran the silver nanoparticle synthesis by chemical reduction, with a PVP capping agent and controlled magnetic stirring.',
+        'The synthesized batch failed, and lab time did not allow a second attempt, so we fell back to commercial conductive ink to stay within the fabrication window. With a partner, I designed a PCB in KiCad, printed it on a Voltera V-One, and soldered a simple LED circuit (3 LEDs, a resistor and a battery).',
+        'The printed traces had inconsistent ink deposition that left gaps in the conductive paths. I worked around them by soldering bridges over the gaps to restore continuity, then confirmed the board worked with an LED bring-up test. The main lesson: a failed step is a new problem to solve under real constraints, not the end of the project.',
       ],
       images: [
         { src: '/images/precision-weighing.jpeg', alt: 'Precision weighing of PVP polymer', caption: '1. Precision weighing of PVP capping agent', description: 'PVP (polyvinylpyrrolidone) precisely weighed at 0.5014 g using a Sartorius analytical balance. PVP controls nanoparticle size and prevents agglomeration during synthesis.' },
         { src: '/images/magnetic-stirrer.jpeg', alt: 'Precursor solution mixing', caption: '2. Precursor solution mixing at 300 RPM', description: 'The precursor solution mixed at 300 RPM using a Heidolph magnetic hot plate stirrer. Controlled stirring ensures uniform reagent distribution and consistent nanoparticle nucleation.' },
         { src: '/images/fume-hood-synthesis.jpeg', alt: 'Synthesis inside fume hood', caption: '3. Synthesis in progress inside a fume hood', description: 'Full synthesis setup inside a fume hood. The Erlenmeyer flask sits on a magnetic stirrer with a condenser attached for safe handling of chemical reagents during the reduction reaction.' },
-        { src: '/images/nanoparticle-sample.jpeg', alt: 'Silver nanoparticle colloid sample', caption: '4. Final silver nanoparticle colloid', description: 'The synthesized silver nanoparticle colloid in a labeled Greiner tube. The dark yellow-brown colour confirms successful formation of silver nanoparticles in colloidal suspension.' },
+        { src: '/images/nanoparticle-sample.jpeg', alt: 'Silver nanoparticle colloid sample', caption: '4. Synthesized nanoparticle sample', description: 'The synthesized sample in a labeled Greiner tube. This batch did not produce a usable conductive ink, and lab time did not allow a re-run, so the boards were printed with commercial ink.' },
         { src: '/images/kicad-pcb-design.jpeg', alt: 'KiCad PCB layout', caption: '5. PCB schematic and layout in KiCad', description: 'Complete PCB schematic and layout in KiCad, including component placement, trace routing, and DRC checks — prepared for Voltera V-One fabrication.' },
-        { src: '/images/voltera-printing.jpeg', alt: 'Voltera V-One printing traces', caption: '6. Voltera V-One printing conductive traces', description: 'The Voltera V-One PCB printer depositing conductive silver ink traces onto substrate, replacing traditional etching with precise dispensing.' },
-        { src: '/images/pcb-led-test.jpeg', alt: 'PCB LED validation', caption: '7. Completed PCB with LED validation', description: 'Final fabricated PCB with a soldered LED successfully lit, confirming end-to-end pipeline from nanoparticle synthesis through conductive ink formulation, PCB printing, soldering, and circuit bring-up.' },
+        { src: '/images/voltera-printing.jpeg', alt: 'Voltera V-One printing traces', caption: '6. Voltera V-One printing conductive traces', description: 'The Voltera V-One PCB printer depositing commercial conductive ink traces onto the substrate, replacing traditional etching with precise dispensing.' },
+        { src: '/images/pcb-led-test.jpeg', alt: 'PCB LED validation', caption: '7. Completed PCB with LED validation', description: 'The finished board with its LEDs lit. Gaps in the printed traces were bridged with solder to restore continuity before the bring-up test passed.' },
       ],
-      tags: ['Nanomaterials Synthesis', 'Printed Electronics', 'PCB Design', 'KiCad', 'Voltera V-One', 'Soldering', 'Circuit Bring-up'],
+      tags: ['Nanoparticle Synthesis', 'Printed Electronics', 'PCB Design', 'KiCad', 'Voltera V-One', 'Soldering', 'Rework'],
       link: null,
     },
     {
@@ -116,7 +124,7 @@ const portfolioData: PortfolioData = {
       brief: 'Rust CLI tool that safely cleans and restructures Microsoft Edge bookmarks — dry-run mode, automatic backups, duplicate detection, and dead-link checking.',
       description: [
         'A command-line tool written in Rust for safely managing and reorganizing Microsoft Edge bookmark files. Built with safety-first design: every operation supports a dry-run mode that shows what would change without touching any files, and automatic backups are created before any modification.',
-        'Features include duplicate bookmark detection, dead-link validation, hierarchical folder restructuring, and organization utilities. The tool parses Edge\'s JSON bookmark format directly, with zero external dependencies at runtime.',
+        'Features include duplicate bookmark detection, async dead-link checking, hierarchical folder restructuring, and organization utilities. Built on clap for the CLI, serde for Edge\'s JSON bookmark format, and reqwest for link checks.',
       ],
       images: [],
       tags: ['Rust', 'CLI', 'JSON Parsing', 'File Systems', 'Developer Tooling'],
@@ -202,10 +210,11 @@ const portfolioData: PortfolioData = {
       category: 'hackathon',
       featured: true,
       title: 'HardHaQ – Quantum Hardware Hackathon',
-      brief: 'Developed RF Paul trap analytical models with automated COMSOL simulations — achieved 2nd highest trap depth-to-power ratio.',
+      brief: 'Three-person team entry: an automated COMSOL pipeline ran 1000+ RF Paul trap simulations in 9 days, placing 2nd for trap depth-to-power ratio among 25+ teams.',
       description: [
-        'Developed comprehensive analytical models for RF Paul trap stability analysis in quantum computing systems. Automated complex electromagnetic simulations using Python, SciPy, and the COMSOL Multiphysics API to optimize trap performance parameters.',
-        'Successfully achieved the second-highest trap depth-to-power ratio in the competition, demonstrating efficient design optimization. Combined theoretical electromagnetics with practical computational modelling to advance quantum hardware development.',
+        'My first hackathon, on a team with Nikhil and Lucas. Evaluating a single RF Paul trap geometry meant running COMSOL by hand, so after hand-testing 50+ parameter sets the team moved to a Python pipeline that drove COMSOL through its mph API. Nikhil built that pipeline and its Streamlit dashboard; Lucas led the trap redesign the judges requested.',
+        'My part: I derived 5+ analytical models for trap stability and depth from electromagnetic theory and cross-validated each against simulation output to narrow the geometry search. I also spotted that the vacuum sphere enclosing the trap had been left out as a parameter and added it, and helped debug a divergence that was producing invalid negative scores.',
+        'Across the 9 days the team ran 1000+ simulations and reached the second-highest trap depth-to-power ratio among 25+ teams, about 7 million times better than the baseline design.',
       ],
       images: [],
       tags: ['Electromagnetics', 'Quantum Hardware', 'COMSOL', 'Python', 'SciPy', 'Scientific Computing'],

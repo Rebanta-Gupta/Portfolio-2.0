@@ -51,15 +51,16 @@
     background-color: var(--bg);
     color: var(--text-primary);
     overflow-x: hidden;
-    cursor: none; /* custom cursor replaces default */
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Hide default cursor everywhere */
-  *, *::before, *::after { cursor: none !important; }
-
-  /* Restore cursor for iframes / external embeds */
-  iframe { cursor: auto !important; }
+  /* Hide the system cursor only where the custom cursor is rendered
+     (mouse users who have not asked for reduced motion). Keep in sync
+     with CUSTOM_CURSOR_QUERY in App.tsx. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    *, *::before, *::after { cursor: none !important; }
+    iframe { cursor: auto !important; }
+  }
 
   a { color: inherit; text-decoration: none; }
   img { display: block; max-width: 100%; height: auto; }

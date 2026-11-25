@@ -10,15 +10,18 @@ import EasterEggOverlay      from './components/effects/EasterEggOverlay';
 import HomePage              from './pages/HomePage';
 import ProjectDetailsPage    from './pages/ProjectDetailsPage';
 
-// Detect touch/mobile — disable custom cursor on touch devices
-const isTouch = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
+// Custom cursor only for mouse users without reduced motion; keep in sync with style.css
+const CUSTOM_CURSOR_QUERY = '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
+const canMatch = typeof window !== 'undefined';
+const showCustomCursor = canMatch && window.matchMedia(CUSTOM_CURSOR_QUERY).matches;
+const reducedMotion = canMatch && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function App() {
   const { data }                = usePortfolioData();
   const { theme, toggle }       = useTheme();
   const { variant, setVariant } = useCursorState();
   const easterEgg               = useEasterEgg();
-  const [loaded, setLoaded]     = useState(false);
+  const [loaded, setLoaded]     = useState(reducedMotion);
 
   // Attach cursor variant listeners to the document
   // Sections/cards set data-cursor attribute; we read it here
@@ -33,8 +36,7 @@ export default function App() {
 
   return (
     <div onMouseOver={handleMouseOver}>
-      {/* Custom cursor — hidden automatically on touch via CSS */}
-      {!isTouch && <CustomCursor variant={variant} />}
+      {showCustomCursor && <CustomCursor variant={variant} />}
 
       {/* Easter egg overlay */}
       <EasterEggOverlay active={easterEgg} />

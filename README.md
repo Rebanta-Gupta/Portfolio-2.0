@@ -17,27 +17,9 @@ npm run dev
 
 ---
 
-## EmailJS Contact Form Setup (5 minutes)
+## Contact
 
-The contact form uses [EmailJS](https://www.emailjs.com) — no server required.
-
-1. Sign up at https://www.emailjs.com (free tier is enough)
-2. **Add a Service:** Connect your Gmail account → copy the **Service ID**
-3. **Create a Template:** Use these exact variable names in the template body:
-   - `{{from_name}}` — sender's name
-   - `{{from_email}}` — sender's email
-   - `{{message}}` — message body
-   - Copy the **Template ID**
-4. Go to **Account → API Keys** → copy your **Public Key**
-5. Open `src/components/sections/Contact.tsx` and replace the three placeholders at the top:
-
-```ts
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
-```
-
-All messages will be delivered to `guptarebanta816@gmail.com` (set in your EmailJS template).
+The Contact section lists the email, LinkedIn and GitHub links from `contact` in `src/content/portfolioData.ts`. There is no form.
 
 ---
 
