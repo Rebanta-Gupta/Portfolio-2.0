@@ -25,12 +25,28 @@ const portfolioData: PortfolioData = {
 
   experience: [
     {
+      title: 'Software Team Member',
+      org: 'Waterloo Rocketry',
+      date: 'Sep 2026 – Present',
+      location: 'Waterloo, ON',
+      description: 'Member of the software team on Waterloo Rocketry, the University of Waterloo\'s student rocketry design team. Getting up to speed on the team\'s Python ground-station software, including Omnibus, the data bus that streams live sensor data from the test rig during cold flows and static fires.',
+      skills: ['Python', 'Git', 'Teamwork'],
+    },
+    {
       title: 'Undergraduate Research Assistant',
       org: 'CoMPhys Group, University of Waterloo',
       date: 'Jun 2026 – Aug 2026',
       location: 'Waterloo, ON',
       description: 'Worked on OpenCMP, an open-source finite-element multiphysics solver built on NGSolve. Designed and built its interactive PyVista/Qt results visualizer solo, with supervisor review, backed by 39 pytest tests and no regressions in the existing suite. Also fixed solver bugs (case-sensitive boundary-condition headers, a bare except swallowing Ctrl+C) and diagnosed CRLF and .pvd output corruption issues.',
       skills: ['Python', 'PyVista / VTK', 'Qt', 'pytest', 'Open Source', 'Debugging'],
+    },
+    {
+      title: 'Academic Representative',
+      org: 'Nanotechnology Engineering, University of Waterloo',
+      date: 'Jan 2026 – Present',
+      location: 'Waterloo, ON',
+      description: 'Represent my Nanotechnology Engineering class to the program. I gather feedback from classmates and bring it to meetings with Nanotechnology Engineering program management, where we discuss the issues students raise and what to change or improve.',
+      skills: ['Communication', 'Student Advocacy', 'Feedback Gathering', 'Collaboration'],
     },
     {
       title: 'Youth Intern',
