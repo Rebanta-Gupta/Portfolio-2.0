@@ -201,6 +201,14 @@
     animation: float-up 0.45s cubic-bezier(0.16,1,0.3,1) both;
   }
 
+  /* ── Project card entry (cards mount after the scroll observer runs) ── */
+  .card-in {
+    animation: float-up 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-in { animation: none; }
+  }
+
   /* ── Easter egg lab-mode flash ── */
   @keyframes lab-mode-flash {
     0%, 100% { filter: hue-rotate(0deg); }

@@ -67,47 +67,8 @@ const portfolioData: PortfolioData = {
   ],
 
   projects: [
-    // ── HARDWARE / NANO ─────────────────────────────────────────────
-    {
-      id: 'nanomaterials',
-      icon: 'beaker',
-      category: 'hardware',
-      featured: true,
-      title: 'Applied Nanomaterials for Electronic Systems',
-      brief: 'UWNRG printed-electronics workshop: the silver nanoparticle ink batch failed, so we switched to commercial ink and used manual rework to deliver a tested, working LED circuit.',
-      description: [
-        'A UWNRG Nanomaterials Workshop that set out to go end-to-end on printed electronics, from raw chemistry to a working circuit, using conductive ink synthesized from scratch. Working as part of the group, I measured reagents and ran the silver nanoparticle synthesis by chemical reduction, with a PVP capping agent and controlled magnetic stirring.',
-        'The synthesized batch failed, and lab time did not allow a second attempt, so we fell back to commercial conductive ink to stay within the fabrication window. With a partner, I designed a PCB in KiCad, printed it on a Voltera V-One, and soldered a simple LED circuit (3 LEDs, a resistor and a battery).',
-        'The printed traces had inconsistent ink deposition that left gaps in the conductive paths. I worked around them by soldering bridges over the gaps to restore continuity, then confirmed the board worked with an LED bring-up test. The main lesson: a failed step is a new problem to solve under real constraints, not the end of the project.',
-      ],
-      images: [
-        { src: '/images/precision-weighing.jpeg', alt: 'Precision weighing of PVP polymer', caption: '1. Precision weighing of PVP capping agent', description: 'PVP (polyvinylpyrrolidone) precisely weighed at 0.5014 g using a Sartorius analytical balance. PVP controls nanoparticle size and prevents agglomeration during synthesis.' },
-        { src: '/images/magnetic-stirrer.jpeg', alt: 'Precursor solution mixing', caption: '2. Precursor solution mixing at 300 RPM', description: 'The precursor solution mixed at 300 RPM using a Heidolph magnetic hot plate stirrer. Controlled stirring ensures uniform reagent distribution and consistent nanoparticle nucleation.' },
-        { src: '/images/fume-hood-synthesis.jpeg', alt: 'Synthesis inside fume hood', caption: '3. Synthesis in progress inside a fume hood', description: 'Full synthesis setup inside a fume hood. The Erlenmeyer flask sits on a magnetic stirrer with a condenser attached for safe handling of chemical reagents during the reduction reaction.' },
-        { src: '/images/nanoparticle-sample.jpeg', alt: 'Silver nanoparticle colloid sample', caption: '4. Synthesized nanoparticle sample', description: 'The synthesized sample in a labeled Greiner tube. This batch did not produce a usable conductive ink, and lab time did not allow a re-run, so the boards were printed with commercial ink.' },
-        { src: '/images/kicad-pcb-design.jpeg', alt: 'KiCad PCB layout', caption: '5. PCB schematic and layout in KiCad', description: 'Complete PCB schematic and layout in KiCad, including component placement, trace routing, and DRC checks — prepared for Voltera V-One fabrication.' },
-        { src: '/images/voltera-printing.jpeg', alt: 'Voltera V-One printing traces', caption: '6. Voltera V-One printing conductive traces', description: 'The Voltera V-One PCB printer depositing commercial conductive ink traces onto the substrate, replacing traditional etching with precise dispensing.' },
-        { src: '/images/pcb-led-test.jpeg', alt: 'PCB LED validation', caption: '7. Completed PCB with LED validation', description: 'The finished board with its LEDs lit. Gaps in the printed traces were bridged with solder to restore continuity before the bring-up test passed.' },
-      ],
-      tags: ['Nanoparticle Synthesis', 'Printed Electronics', 'PCB Design', 'KiCad', 'Voltera V-One', 'Soldering', 'Rework'],
-      link: null,
-    },
-    {
-      id: 'teng',
-      icon: 'zap',
-      category: 'hardware',
-      title: 'Triboelectric Nanogenerator (TENG)',
-      brief: 'Designed and built a slider-crank mechanical energy harvesting device that converts motion to electricity via the triboelectric effect.',
-      description: [
-        'Designed and assembled a slider-crank–based triboelectric nanogenerator for mechanical-to-electrical energy conversion. This device harnesses the triboelectric effect to generate electrical power from mechanical motion, representing a sustainable approach to energy harvesting.',
-        'Created custom 3D-printable parts using SolidWorks CAD software, ensuring precise mechanical tolerances and optimal functionality. The project involved iterative prototyping and testing to maximize energy conversion efficiency.',
-      ],
-      images: [],
-      tags: ['Mechanical Design', 'Energy Harvesting', 'SolidWorks', '3D Printing', 'Prototyping'],
-      link: null,
-    },
-
-    // ── SOFTWARE ─────────────────────────────────────────────────────
+    // Order matters: featured projects render first, in this order, as
+    // alternating wide/narrow rows (wide+narrow, then narrow+wide).
     {
       id: 'opencmp',
       icon: 'cpu',
@@ -143,6 +104,46 @@ const portfolioData: PortfolioData = {
       liveLink: 'https://pypi.org/project/vaultwright/',
     },
     {
+      id: 'hardhaq',
+      icon: 'atom',
+      category: 'hackathon',
+      featured: true,
+      title: 'HardHaQ – Quantum Hardware Hackathon',
+      brief: 'Three-person team entry: an automated COMSOL pipeline ran 1000+ RF Paul trap simulations in 9 days, placing 2nd for trap depth-to-power ratio among 25+ teams.',
+      description: [
+        'My first hackathon, on a team with Nikhil and Lucas. Evaluating a single RF Paul trap geometry meant running COMSOL by hand, so after hand-testing 50+ parameter sets the team moved to a Python pipeline that drove COMSOL through its mph API. Nikhil built that pipeline and its Streamlit dashboard; Lucas led the trap redesign the judges requested.',
+        'My part: I derived 5+ analytical models for trap stability and depth from electromagnetic theory and cross-validated each against simulation output to narrow the geometry search. I also spotted that the vacuum sphere enclosing the trap had been left out as a parameter and added it, and helped debug a divergence that was producing invalid negative scores.',
+        'Across the 9 days the team ran 1000+ simulations and reached the second-highest trap depth-to-power ratio among 25+ teams, about 7 million times better than the baseline design.',
+      ],
+      images: [],
+      tags: ['Electromagnetics', 'Quantum Hardware', 'COMSOL', 'Python', 'SciPy', 'Scientific Computing'],
+      link: 'https://github.com/Rebanta-Gupta/Formulae-Documentation',
+    },
+    {
+      id: 'nanomaterials',
+      icon: 'beaker',
+      category: 'hardware',
+      featured: true,
+      title: 'Applied Nanomaterials for Electronic Systems',
+      brief: 'UWNRG printed-electronics workshop: the silver nanoparticle ink batch failed, so we switched to commercial ink and used manual rework to deliver a tested, working LED circuit.',
+      description: [
+        'A UWNRG Nanomaterials Workshop that set out to go end-to-end on printed electronics, from raw chemistry to a working circuit, using conductive ink synthesized from scratch. Working as part of the group, I measured reagents and ran the silver nanoparticle synthesis by chemical reduction, with a PVP capping agent and controlled magnetic stirring.',
+        'The synthesized batch failed, and lab time did not allow a second attempt, so we fell back to commercial conductive ink to stay within the fabrication window. With a partner, I designed a PCB in KiCad, printed it on a Voltera V-One, and soldered a simple LED circuit (3 LEDs, a resistor and a battery).',
+        'The printed traces had inconsistent ink deposition that left gaps in the conductive paths. I worked around them by soldering bridges over the gaps to restore continuity, then confirmed the board worked with an LED bring-up test. The main lesson: a failed step is a new problem to solve under real constraints, not the end of the project.',
+      ],
+      images: [
+        { src: '/images/precision-weighing.jpeg', alt: 'Precision weighing of PVP polymer', caption: '1. Precision weighing of PVP capping agent', description: 'PVP (polyvinylpyrrolidone) precisely weighed at 0.5014 g using a Sartorius analytical balance. PVP controls nanoparticle size and prevents agglomeration during synthesis.' },
+        { src: '/images/magnetic-stirrer.jpeg', alt: 'Precursor solution mixing', caption: '2. Precursor solution mixing at 300 RPM', description: 'The precursor solution mixed at 300 RPM using a Heidolph magnetic hot plate stirrer. Controlled stirring ensures uniform reagent distribution and consistent nanoparticle nucleation.' },
+        { src: '/images/fume-hood-synthesis.jpeg', alt: 'Synthesis inside fume hood', caption: '3. Synthesis in progress inside a fume hood', description: 'Full synthesis setup inside a fume hood. The Erlenmeyer flask sits on a magnetic stirrer with a condenser attached for safe handling of chemical reagents during the reduction reaction.' },
+        { src: '/images/nanoparticle-sample.jpeg', alt: 'Silver nanoparticle colloid sample', caption: '4. Synthesized nanoparticle sample', description: 'The synthesized sample in a labeled Greiner tube. This batch did not produce a usable conductive ink, and lab time did not allow a re-run, so the boards were printed with commercial ink.' },
+        { src: '/images/kicad-pcb-design.jpeg', alt: 'KiCad PCB layout', caption: '5. PCB schematic and layout in KiCad', description: 'Complete PCB schematic and layout in KiCad, including component placement, trace routing, and DRC checks — prepared for Voltera V-One fabrication.' },
+        { src: '/images/voltera-printing.jpeg', alt: 'Voltera V-One printing traces', caption: '6. Voltera V-One printing conductive traces', description: 'The Voltera V-One PCB printer depositing commercial conductive ink traces onto the substrate, replacing traditional etching with precise dispensing.' },
+        { src: '/images/pcb-led-test.jpeg', alt: 'PCB LED validation', caption: '7. Completed PCB with LED validation', description: 'The finished board with its LEDs lit. Gaps in the printed traces were bridged with solder to restore continuity before the bring-up test passed.' },
+      ],
+      tags: ['Nanoparticle Synthesis', 'Printed Electronics', 'PCB Design', 'KiCad', 'Voltera V-One', 'Soldering', 'Rework'],
+      link: null,
+    },
+    {
       id: 'statfit',
       icon: 'chart-column',
       category: 'software',
@@ -173,6 +174,20 @@ const portfolioData: PortfolioData = {
       link: 'https://github.com/Rebanta-Gupta/edge-bookmarks-organizer',
     },
     {
+      id: 'teng',
+      icon: 'zap',
+      category: 'hardware',
+      title: 'Triboelectric Nanogenerator (TENG)',
+      brief: 'Designed and built a slider-crank mechanical energy harvesting device that converts motion to electricity via the triboelectric effect.',
+      description: [
+        'Designed and assembled a slider-crank–based triboelectric nanogenerator for mechanical-to-electrical energy conversion. This device harnesses the triboelectric effect to generate electrical power from mechanical motion, representing a sustainable approach to energy harvesting.',
+        'Created custom 3D-printable parts using SolidWorks CAD software, ensuring precise mechanical tolerances and optimal functionality. The project involved iterative prototyping and testing to maximize energy conversion efficiency.',
+      ],
+      images: [],
+      tags: ['Mechanical Design', 'Energy Harvesting', 'SolidWorks', '3D Printing', 'Prototyping'],
+      link: null,
+    },
+    {
       id: 'taylor-matlab',
       icon: 'chart-column',
       category: 'software',
@@ -200,8 +215,6 @@ const portfolioData: PortfolioData = {
       tags: ['Java', 'OOP', 'Data Structures', 'Algorithms', 'CS Fundamentals'],
       link: 'https://github.com/Rebanta-Gupta/Java-Projects',
     },
-
-    // ── GAMES ────────────────────────────────────────────────────────
     {
       id: 'trex-game',
       icon: 'gamepad-2',
@@ -243,24 +256,6 @@ const portfolioData: PortfolioData = {
       images: [],
       tags: ['JavaScript', 'Matter.js', 'p5.js', 'Physics Simulation', 'Creative Coding'],
       link: 'https://github.com/Rebanta-Gupta/Bouncing-Ball-Simulation',
-    },
-
-    // ── HACKATHONS ───────────────────────────────────────────────────
-    {
-      id: 'hardhaq',
-      icon: 'atom',
-      category: 'hackathon',
-      featured: true,
-      title: 'HardHaQ – Quantum Hardware Hackathon',
-      brief: 'Three-person team entry: an automated COMSOL pipeline ran 1000+ RF Paul trap simulations in 9 days, placing 2nd for trap depth-to-power ratio among 25+ teams.',
-      description: [
-        'My first hackathon, on a team with Nikhil and Lucas. Evaluating a single RF Paul trap geometry meant running COMSOL by hand, so after hand-testing 50+ parameter sets the team moved to a Python pipeline that drove COMSOL through its mph API. Nikhil built that pipeline and its Streamlit dashboard; Lucas led the trap redesign the judges requested.',
-        'My part: I derived 5+ analytical models for trap stability and depth from electromagnetic theory and cross-validated each against simulation output to narrow the geometry search. I also spotted that the vacuum sphere enclosing the trap had been left out as a parameter and added it, and helped debug a divergence that was producing invalid negative scores.',
-        'Across the 9 days the team ran 1000+ simulations and reached the second-highest trap depth-to-power ratio among 25+ teams, about 7 million times better than the baseline design.',
-      ],
-      images: [],
-      tags: ['Electromagnetics', 'Quantum Hardware', 'COMSOL', 'Python', 'SciPy', 'Scientific Computing'],
-      link: 'https://github.com/Rebanta-Gupta/Formulae-Documentation',
     },
   ],
 
